@@ -245,6 +245,12 @@ class Mesh(MeshBase):
                 out vec4 f_color;
 
                 void main() {
+                    vec3 view_direction = normalize(camera_position - v_vert);
+                    float do_cull = dot(normalize(v_norm), view_direction);
+                    if (do_cull <= 0) {
+                        discard
+                    }
+
                     float lum = dot(normalize(v_norm), normalize(v_vert - light));
                     lum = acos(lum) / 3.14159265;
                     lum = clamp(lum, 0.0, 1.0);
